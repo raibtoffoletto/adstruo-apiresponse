@@ -6,8 +6,13 @@ namespace Adstruo.ApiResponse;
 
 public static class HttpResponseExtensions
 {
-    public static async Task<HttpResponse> JsonSerializerAsync(this HttpResponse res, object? value)
+    public static async Task<HttpResponse> JsonSerializerAsync(
+        this HttpResponse res,
+        object? value,
+        int statusCode = 200
+    )
     {
+        res.StatusCode = statusCode;
         res.ContentType = "application/json; charset=utf-8";
 
         await res.WriteAsync(

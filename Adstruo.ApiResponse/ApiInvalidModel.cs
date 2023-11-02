@@ -21,8 +21,6 @@ public class ApiInvalidModel : IActionResult
         result.SetData(_model);
         result.SetError(new FailedToParseRequestException());
 
-        res.StatusCode = result.Code;
-
-        await res.JsonSerializerAsync(result);
+        await res.JsonSerializerAsync(result, result.Code);
     }
 }
