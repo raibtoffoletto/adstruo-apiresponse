@@ -2,16 +2,16 @@ namespace Adstruo.ApiResponse;
 
 public static class ApiExceptionError
 {
-    public static readonly string ALL_FIELDS_REQUIRED = "ALL_FIELDS_REQUIRED";
-    public static readonly string BAD_REQUEST = "BAD_REQUEST";
-    public static readonly string FAILED_TO_PARSE_REQUEST = "FAILED_TO_PARSE_REQUEST";
-    public static readonly string FORBIDDEN = "FORBIDDEN";
-    public static readonly string INVALID_USER_CREDENTIALS = "INVALID_USER_CREDENTIALS";
-    public static readonly string NETWORK_ERROR = "NETWORK_ERROR";
-    public static readonly string NOT_FOUND = "NOT_FOUND";
-    public static readonly string UNAUTHENTICATED = "UNAUTHENTICATED";
-    public static readonly string UNAUTHORIZED = "UNAUTHORIZED";
-    public static readonly string UNKNOWN = "UNKNOWN";
+    public const string ALL_FIELDS_REQUIRED = "ALL_FIELDS_REQUIRED";
+    public const string BAD_REQUEST = "BAD_REQUEST";
+    public const string FAILED_TO_PARSE_REQUEST = "FAILED_TO_PARSE_REQUEST";
+    public const string FORBIDDEN = "FORBIDDEN";
+    public const string INVALID_USER_CREDENTIALS = "INVALID_USER_CREDENTIALS";
+    public const string NETWORK_ERROR = "NETWORK_ERROR";
+    public const string NOT_FOUND = "NOT_FOUND";
+    public const string UNAUTHENTICATED = "UNAUTHENTICATED";
+    public const string UNAUTHORIZED = "UNAUTHORIZED";
+    public const string UNKNOWN = "UNKNOWN";
 }
 
 public abstract class ApiException : Exception
