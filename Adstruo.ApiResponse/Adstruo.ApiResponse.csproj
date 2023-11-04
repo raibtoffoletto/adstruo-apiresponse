@@ -5,9 +5,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Adstruo.ApiResponse</PackageId>
-    <Version>1.0.0</Version>
+    <description>This package provides a consistent structured json response for APIs.</description>
     <Authors>Raí Toffoletto</Authors>
+    <Copyright>© Copyright Raí Toffoletto 2023</Copyright>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/raibtoffoletto/adstruo-apiresponse</PackageProjectUrl>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/raibtoffoletto/adstruo-apiresponse.git</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>API;JSON;Adstruo;Exceptions</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
@@ -20,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="icon.png" Pack="true" PackagePath="/" />
     <None Include="../README.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 

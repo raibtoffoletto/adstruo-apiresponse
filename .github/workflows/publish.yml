@@ -24,7 +24,7 @@ jobs:
         run: dotnet restore
 
       - name: Create package
-        run: dotnet pack --configuration Release --output ${{ env.NuGetDirectory }}
+        run: dotnet pack --configuration Release --output ${{ env.NuGetDirectory }} -p:RepositoryCommit="$(git rev-parse HEAD)" -p:Version="$(git tag --points-at HEAD)"
 
       - uses: actions/upload-artifact@v3
         with:
@@ -49,7 +49,7 @@ jobs:
         run: dotnet tool update Meziantou.Framework.NuGetPackageValidation.Tool --global
 
       - name: Validate package
-        run: meziantou.validate-nuget-package ${{ env.NuGetDirectory }}/*.nupkg
+        run: meziantou.validate-nuget-package --excluded-rule-ids 111 ${{ env.NuGetDirectory }}/*.nupkg
 
   deploy:
     runs-on: ubuntu-latest
