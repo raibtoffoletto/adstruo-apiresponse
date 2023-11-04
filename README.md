@@ -1,1 +1,1 @@
-# adstruo-apiresponse
+# Adstruo.ApiResponse⠀⠀⠀⠀⠀⠀⠀[![.NET](https://github.com/raibtoffoletto/adstruo-apiresponse/actions/workflows/run-tests.yml/badge.svg)](https://github.com/raibtoffoletto/adstruo-apiresponse/actions/workflows/run-tests.yml)

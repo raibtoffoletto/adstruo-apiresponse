@@ -6,6 +6,12 @@
       "command": "dotnet",
       "args": ["csharpier", "${staged}"],
       "include": ["**/*.cs"]
+    },
+    {
+      "name": "run-tests",
+      "group": "pre-commit",
+      "command": "dotnet",
+      "args": ["test", "/p:CollectCoverage=true"]
     }
   ]
 }
