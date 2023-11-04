@@ -4,8 +4,10 @@ using Newtonsoft.Json.Serialization;
 
 namespace Adstruo.ApiResponse;
 
+/// <summary>Class containing helpful methods</summary>
 public static class HttpResponseExtensions
 {
+    /// <summary>Serializes the HttpResponse using Newtonsoft.Json</summary>
     public static async Task<HttpResponse> JsonSerializerAsync(
         this HttpResponse res,
         object? value,

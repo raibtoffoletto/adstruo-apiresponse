@@ -7,23 +7,32 @@ namespace Adstruo.ApiResponse;
 /// <summary>Structured HttpResponse without data</summary>
 public class ApiResponse : IActionResult
 {
+    /// <summary>ILogger instance</summary>
     protected readonly ILogger? _logger = null;
+
+    /// <summary>Define if route is public or not</summary>
     protected readonly bool _isPublic = false;
+
+    /// <summary>An authorized session</summary>
     protected readonly object? _session = null;
+
     private readonly Func<Task>? _action = null;
 
+    /// <summary>Public ApiResponse without action</summary>
     public ApiResponse(ILogger? logger = null, bool isPublic = true)
     {
         _logger = logger;
         _isPublic = isPublic;
     }
 
+    /// <summary>Private ApiResponse without action</summary>
     public ApiResponse(object? session, ILogger? logger = null)
     {
         _logger = logger;
         _session = session;
     }
 
+    /// <summary>Public ApiResponse with async action</summary>
     public ApiResponse(Func<Task> action, ILogger? logger = null, bool isPublic = true)
     {
         _logger = logger;
@@ -31,6 +40,7 @@ public class ApiResponse : IActionResult
         _action = action;
     }
 
+    /// <summary>Private ApiResponse with async action</summary>
     public ApiResponse(Func<Task> action, object? session, ILogger? logger = null)
     {
         _logger = logger;
@@ -38,6 +48,7 @@ public class ApiResponse : IActionResult
         _action = action;
     }
 
+    /// <summary>Public ApiResponse with action</summary>
     public ApiResponse(Action action, ILogger? logger = null, bool isPublic = true)
     {
         _logger = logger;
@@ -45,6 +56,7 @@ public class ApiResponse : IActionResult
         _action = () => Task.Run(() => action());
     }
 
+    /// <summary>Private ApiResponse with action</summary>
     public ApiResponse(Action action, object? session, ILogger? logger = null)
     {
         _logger = logger;
@@ -52,6 +64,7 @@ public class ApiResponse : IActionResult
         _action = () => Task.Run(() => action());
     }
 
+    /// <summary>Sets the HttpResponse</summary>
     public virtual async Task ExecuteResultAsync(ActionContext context)
     {
         HttpResponse res = context.HttpContext.Response;
@@ -92,30 +105,35 @@ public class ApiResponse<T> : ApiResponse
 {
     private readonly Func<Task<T>> _action;
 
+    /// <summary>Public ApiResponse with async action and data</summary>
     public ApiResponse(Func<Task<T>> action, ILogger? logger = null, bool isPublic = true)
         : base(logger, isPublic)
     {
         _action = action;
     }
 
+    /// <summary>Private ApiResponse with async action and data</summary>
     public ApiResponse(Func<Task<T>> action, object? session, ILogger? logger = null)
         : base(session, logger)
     {
         _action = action;
     }
 
+    /// <summary>Public ApiResponse with action and data</summary>
     public ApiResponse(Func<T> action, ILogger? logger = null, bool isPublic = true)
         : base(logger, isPublic)
     {
         _action = () => Task.Run(() => action());
     }
 
+    /// <summary>Private ApiResponse with action and data</summary>
     public ApiResponse(Func<T> action, object? session, ILogger? logger = null)
         : base(session, logger)
     {
         _action = () => Task.Run(() => action());
     }
 
+    /// <summary>Sets the HttpResponse</summary>
     public override async Task ExecuteResultAsync(ActionContext context)
     {
         HttpResponse res = context.HttpContext.Response;

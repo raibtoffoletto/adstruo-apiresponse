@@ -8,6 +8,7 @@
     <Version>1.0.0</Version>
     <Authors>Raí Toffoletto</Authors>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
