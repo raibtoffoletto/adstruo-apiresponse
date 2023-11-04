@@ -7,10 +7,19 @@ namespace Adstruo.ApiResponse;
 public class ApiResponse : IActionResult
 {
     protected readonly ILogger? _logger = null;
+    protected readonly bool _isPublic = false;
+    protected readonly object? _session = null;
 
-    public ApiResponse(ILogger? logger = null)
+    public ApiResponse(ILogger? logger = null, bool isPublic = true)
     {
         _logger = logger;
+        _isPublic = isPublic;
+    }
+
+    public ApiResponse(object? session, ILogger? logger = null)
+    {
+        _logger = logger;
+        _session = session;
     }
 
     public virtual async Task ExecuteResultAsync(ActionContext context)
@@ -18,6 +27,11 @@ public class ApiResponse : IActionResult
         HttpResponse res = context.HttpContext.Response;
 
         ApiResult result = new();
+
+        if (!_isPublic & _session == null)
+        {
+            result.SetError(new UnauthenticatedException());
+        }
 
         await res.JsonSerializerAsync(result, result.Code);
     }
@@ -27,14 +41,26 @@ public class ApiResponse<T> : ApiResponse
 {
     private readonly Func<Task<T>> _action;
 
-    public ApiResponse(Func<Task<T>> action, ILogger? logger = null)
-        : base(logger)
+    public ApiResponse(Func<Task<T>> action, ILogger? logger = null, bool isPublic = true)
+        : base(logger, isPublic)
     {
         _action = action;
     }
 
-    public ApiResponse(Func<T> action, ILogger? logger = null)
-        : base(logger)
+    public ApiResponse(Func<Task<T>> action, object? session, ILogger? logger = null)
+        : base(session, logger)
+    {
+        _action = action;
+    }
+
+    public ApiResponse(Func<T> action, ILogger? logger = null, bool isPublic = true)
+        : base(logger, isPublic)
+    {
+        _action = () => Task.Run(() => action());
+    }
+
+    public ApiResponse(Func<T> action, object? session, ILogger? logger = null)
+        : base(session, logger)
     {
         _action = () => Task.Run(() => action());
     }
@@ -47,6 +73,11 @@ public class ApiResponse<T> : ApiResponse
 
         try
         {
+            if (!_isPublic & _session == null)
+            {
+                throw new UnauthenticatedException();
+            }
+
             T data = await _action();
 
             result.SetData(data);

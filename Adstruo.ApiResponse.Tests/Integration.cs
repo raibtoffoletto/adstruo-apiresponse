@@ -133,6 +133,76 @@ public class Integration
         );
     }
 
+    [Fact]
+    public async Task PrivateVoidRoute_Succeeds()
+    {
+        HttpResponseMessage response = await _client.PostAsync(
+            Routes.PrivateVoid,
+            JsonContent.Create(new { authorized = "yes" })
+        );
+
+        VerifyResponse(response);
+
+        ApiResult result = await ParseContent(response);
+
+        VerifyResult(result, response, ApiResultStatus.Ok);
+    }
+
+    [Fact]
+    public async Task PrivateVoidRoute_FailsWhenUnauthorized()
+    {
+        HttpResponseMessage response = await _client.PostAsync(Routes.PrivateVoid, null);
+
+        VerifyResponse(response, 401);
+
+        ApiResult result = await ParseContent(response);
+
+        VerifyResult(result, response, ApiResultStatus.Error);
+        VerifyContent(
+            result,
+            ApiExceptionError.UNAUTHENTICATED,
+            UnauthenticatedException.Description
+        );
+    }
+
+    [Theory]
+    [InlineData(Routes.PrivateData)]
+    [InlineData(Routes.PrivateDataAsync)]
+    public async Task PrivateDataRoute_Succeeds(string route)
+    {
+        IDictionary<string, string> data = new Dictionary<string, string>
+        {
+            { "id", Guid.NewGuid().ToString() },
+            { "timestamp", DateTime.UtcNow.ToString() }
+        };
+
+        HttpResponseMessage response = await _client.PostAsync(route, JsonContent.Create(data));
+
+        VerifyResponse(response);
+
+        ApiResult<IDictionary<string, string>> result = await ParseContent(response);
+
+        VerifyResult(result, response, ApiResultStatus.Ok);
+        Assert.Equivalent(result.Data, data, true);
+    }
+
+    [Fact]
+    public async Task PrivateDataRoute_FailsWhenUnauthorized()
+    {
+        HttpResponseMessage response = await _client.PostAsync(Routes.PrivateData, null);
+
+        VerifyResponse(response, 401);
+
+        ApiResult result = await ParseContent(response);
+
+        VerifyResult(result, response, ApiResultStatus.Error);
+        VerifyContent(
+            result,
+            ApiExceptionError.UNAUTHENTICATED,
+            UnauthenticatedException.Description
+        );
+    }
+
     private static async Task<ApiResult<IDictionary<string, string>>> ParseContent(
         HttpResponseMessage response
     )

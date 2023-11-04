@@ -177,6 +177,56 @@ public class Server
                     );
                 }
             );
+
+            endpoints.MapPost(
+                Routes.PrivateVoid,
+                async (context) =>
+                {
+                    Mock<HttpContext> mockContext = new();
+                    mockContext.Setup(m => m.Response).Returns(context.Response);
+
+                    IDictionary<string, string>? data = await GetBodyData(context);
+
+                    await new ApiResponse(data, _log).ExecuteResultAsync(
+                        new ActionContext(mockContext.Object, _router, _action)
+                    );
+                }
+            );
+
+            endpoints.MapPost(
+                Routes.PrivateData,
+                async (context) =>
+                {
+                    Mock<HttpContext> mockContext = new();
+                    mockContext.Setup(m => m.Response).Returns(context.Response);
+
+                    IDictionary<string, string>? data = await GetBodyData(context);
+
+                    ApiResponse<dynamic> response = new(() => data!, data, _log);
+
+                    await response.ExecuteResultAsync(
+                        new ActionContext(mockContext.Object, _router, _action)
+                    );
+                }
+            );
+
+            endpoints.MapPost(
+                Routes.PrivateDataAsync,
+                async (context) =>
+                {
+                    Mock<HttpContext> mockContext = new();
+                    mockContext.Setup(m => m.Response).Returns(context.Response);
+
+                    IDictionary<string, string>? data = await GetBodyData(context);
+
+                    ApiResponse<dynamic> response =
+                        new(async () => await Task.FromResult(data!), data, _log);
+
+                    await response.ExecuteResultAsync(
+                        new ActionContext(mockContext.Object, _router, _action)
+                    );
+                }
+            );
         });
     }
 
