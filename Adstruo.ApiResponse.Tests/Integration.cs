@@ -18,10 +18,13 @@ public class Integration
         _client = _server.CreateClient();
     }
 
-    [Fact]
-    public async Task VoidRoute_IsSuccessful()
+    [Theory]
+    [InlineData(Routes.Void)]
+    [InlineData(Routes.VoidAction)]
+    [InlineData(Routes.VoidActionAsync)]
+    public async Task VoidRoute_IsSuccessful(string route)
     {
-        HttpResponseMessage response = await _client.GetAsync(Routes.Void);
+        HttpResponseMessage response = await _client.GetAsync(route);
 
         VerifyResponse(response);
 
@@ -30,10 +33,12 @@ public class Integration
         VerifyResult(result, response, ApiResultStatus.Ok);
     }
 
-    [Fact]
-    public async Task GenericErrorRoute_ReturnsError()
+    [Theory]
+    [InlineData(Routes.GenericError)]
+    [InlineData(Routes.VoidActionError)]
+    public async Task GenericErrorRoute_ReturnsError(string route)
     {
-        HttpResponseMessage response = await _client.GetAsync(Routes.GenericError);
+        HttpResponseMessage response = await _client.GetAsync(route);
 
         VerifyResponse(response, 400);
 
@@ -168,7 +173,9 @@ public class Integration
     [Theory]
     [InlineData(Routes.PrivateData)]
     [InlineData(Routes.PrivateDataAsync)]
-    public async Task PrivateDataRoute_Succeeds(string route)
+    [InlineData(Routes.PrivateVoidAction, false)]
+    [InlineData(Routes.PrivateVoidActionAsync, false)]
+    public async Task PrivateDataRoute_Succeeds(string route, bool hasResponseData = true)
     {
         IDictionary<string, string> data = new Dictionary<string, string>
         {
@@ -183,7 +190,11 @@ public class Integration
         ApiResult<IDictionary<string, string>> result = await ParseContent(response);
 
         VerifyResult(result, response, ApiResultStatus.Ok);
-        Assert.Equivalent(result.Data, data, true);
+
+        if (hasResponseData)
+        {
+            Assert.Equivalent(result.Data, data, true);
+        }
     }
 
     [Fact]

@@ -126,6 +126,21 @@ public class Server
             );
 
             endpoints.MapGet(
+                Routes.VoidActionError,
+                async (context) =>
+                {
+                    Mock<HttpContext> mockContext = new();
+                    mockContext.Setup(m => m.Response).Returns(context.Response);
+
+                    ApiResponse response = new(() => throw new Exception(), _log);
+
+                    await response.ExecuteResultAsync(
+                        new ActionContext(mockContext.Object, _router, _action)
+                    );
+                }
+            );
+
+            endpoints.MapGet(
                 Routes.UnknownError,
                 async (context) =>
                 {
@@ -221,6 +236,98 @@ public class Server
 
                     ApiResponse<dynamic> response =
                         new(async () => await Task.FromResult(data!), data, _log);
+
+                    await response.ExecuteResultAsync(
+                        new ActionContext(mockContext.Object, _router, _action)
+                    );
+                }
+            );
+
+            endpoints.MapPost(
+                Routes.PrivateVoidAction,
+                async (context) =>
+                {
+                    Mock<HttpContext> mockContext = new();
+                    mockContext.Setup(m => m.Response).Returns(context.Response);
+
+                    IDictionary<string, string>? data = await GetBodyData(context);
+
+                    ApiResponse response =
+                        new(
+                            () => {
+                                /*does nothing*/
+                            },
+                            data,
+                            _log
+                        );
+
+                    await response.ExecuteResultAsync(
+                        new ActionContext(mockContext.Object, _router, _action)
+                    );
+                }
+            );
+
+            endpoints.MapPost(
+                Routes.PrivateVoidActionAsync,
+                async (context) =>
+                {
+                    Mock<HttpContext> mockContext = new();
+                    mockContext.Setup(m => m.Response).Returns(context.Response);
+
+                    IDictionary<string, string>? data = await GetBodyData(context);
+
+                    ApiResponse response =
+                        new(
+                            async () =>
+                                await Task.Run(() => {
+                                    /*does nothing*/
+                                }),
+                            data,
+                            _log
+                        );
+
+                    await response.ExecuteResultAsync(
+                        new ActionContext(mockContext.Object, _router, _action)
+                    );
+                }
+            );
+
+            endpoints.MapGet(
+                Routes.VoidAction,
+                async (context) =>
+                {
+                    Mock<HttpContext> mockContext = new();
+                    mockContext.Setup(m => m.Response).Returns(context.Response);
+
+                    ApiResponse response =
+                        new(
+                            () => {
+                                /*does nothing*/
+                            },
+                            _log
+                        );
+
+                    await response.ExecuteResultAsync(
+                        new ActionContext(mockContext.Object, _router, _action)
+                    );
+                }
+            );
+
+            endpoints.MapGet(
+                Routes.VoidActionAsync,
+                async (context) =>
+                {
+                    Mock<HttpContext> mockContext = new();
+                    mockContext.Setup(m => m.Response).Returns(context.Response);
+
+                    ApiResponse response =
+                        new(
+                            async () =>
+                                await Task.Run(() => {
+                                    /*does nothing*/
+                                }),
+                            _log
+                        );
 
                     await response.ExecuteResultAsync(
                         new ActionContext(mockContext.Object, _router, _action)
