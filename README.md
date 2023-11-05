@@ -1,10 +1,4 @@
-<h1 style="padding: 2px 8px; display: flex; align-items: center; justify-content: space-between;">
-  <span>Adstruo.ApiResponse</span>
-  
-  <a aria-label="build status" href="https://github.com/raibtoffoletto/adstruo-apiresponse/actions/workflows/run-tests.yml" target="_blank">
-    <img alt="build status" src="https://github.com/raibtoffoletto/adstruo-apiresponse/actions/workflows/run-tests.yml/badge.svg">
-  </a>
-</h1>
+# Adstruo.ApiResponse [![All Tests](https://github.com/raibtoffoletto/adstruo-apiresponse/actions/workflows/run-tests.yml/badge.svg)](https://github.com/raibtoffoletto/adstruo-apiresponse/actions/workflows/run-tests.yml) [![Publish NuGet](https://github.com/raibtoffoletto/adstruo-apiresponse/actions/workflows/publish.yml/badge.svg)](https://github.com/raibtoffoletto/adstruo-apiresponse/actions/workflows/publish.yml)
 
 
 > Adstruo *(from the latin: to add, to contribute)* is a name I use for different support packages I create in different languages and contexts. It's from far a coherent project namespace =)

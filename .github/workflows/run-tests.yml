@@ -1,4 +1,4 @@
-name: .NET
+name: All Tests
 
 on:
   workflow_dispatch:
