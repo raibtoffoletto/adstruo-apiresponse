@@ -1,7 +1,6 @@
 # Adstruo.ApiResponse [![All Tests](https://github.com/raibtoffoletto/adstruo-apiresponse/actions/workflows/run-tests.yml/badge.svg)](https://github.com/raibtoffoletto/adstruo-apiresponse/actions/workflows/run-tests.yml) [![Publish NuGet](https://github.com/raibtoffoletto/adstruo-apiresponse/actions/workflows/publish.yml/badge.svg)](https://github.com/raibtoffoletto/adstruo-apiresponse/actions/workflows/publish.yml)
 
-
-> Adstruo *(from the latin: to add, to contribute)* is a name I use for different support packages I create in different languages and contexts. It's from far a coherent project namespace =)
+> Adstruo _(from the latin: to add, to contribute)_ is a name I use for different support packages I create in different languages and contexts. It's from far a coherent project namespace =)
 
 This `dotNet` package provides a consistent structured json response for APIs. It includes a high order class derived from `IActionResult` to be used in the project's controllers, and a set of specific error messages, each with it's proper http code, description and key.
 
@@ -31,16 +30,16 @@ class ApiResult<T> {
 
 A set of error keys to be used as identifier for the exception (util to translate error messages in the front-end for example):
 
- - ALL_FIELDS_REQUIRED
- - BAD_REQUEST
- - FAILED_TO_PARSE_REQUEST
- - FORBIDDEN
- - INVALID_USER_CREDENTIALS
- - NETWORK_ERROR
- - NOT_FOUND
- - UNAUTHENTICATED
- - UNAUTHORIZED
- - UNKNOWN
+- ALL_FIELDS_REQUIRED
+- BAD_REQUEST
+- FAILED_TO_PARSE_REQUEST
+- FORBIDDEN
+- INVALID_USER_CREDENTIALS
+- NETWORK_ERROR
+- NOT_FOUND
+- UNAUTHENTICATED
+- UNAUTHORIZED
+- UNKNOWN
 
 Every error code has its own `Exception` implementation with the key, a description and the standard HTTP code attached to it. The error constructors also accept the standard `string? message` argument for custom descriptions.
 
@@ -116,16 +115,20 @@ To return any kind of data an `ApiResponse<T>` instance should be returned. It r
 
 ### Invalid Model Configuration
 
-> To keep compatibility through all api responses, an `IActionResult ApiInvalidModel` class is provided and should be configured in the services set-up. This will wrap any error thrown outside the controller routes.
+> To keep compatibility through all api responses, an `IActionResult ApiInvalidModel` class is provided and should be configured in the services set-up. This will wrap any error thrown about invalid models.
 
 ```cs
 (IServiceCollection services) => {
-  services
-      .AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true)
-      .ConfigureApiBehaviorOptions(
-          options =>
-              options.InvalidModelStateResponseFactory = context =>
-                  new ApiInvalidModel(context.ModelState)
-      );
+  services.AddControllersWithInvalidModel();
+}
+```
+
+### Catch Error Middleware
+
+> To catch all thrown errors and keep the response coherent, a middleware needs to be inject into the app builder.
+
+```cs
+(IApplicationBuilder app) => {
+  app.UseApiExceptionMiddleware();
 }
 ```
