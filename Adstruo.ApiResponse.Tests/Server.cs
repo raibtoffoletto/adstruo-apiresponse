@@ -32,6 +32,8 @@ public class Server
     {
         app.UseRouting();
 
+        app.UseApiExceptionMiddleware();
+
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapGet(

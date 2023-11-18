@@ -71,29 +71,14 @@ public class ApiResponse : IActionResult
 
         ApiResult result = new();
 
-        try
+        if (!_isPublic & _session == null)
         {
-            if (!_isPublic & _session == null)
-            {
-                throw new UnauthenticatedException();
-            }
-
-            if (_action != null)
-            {
-                await _action();
-            }
+            throw new UnauthenticatedException();
         }
-        catch (ApiException ex)
-        {
-            result.SetError(ex);
 
-            _logger?.LogDebug("[Result Error]: {message}", ex.Message);
-        }
-        catch (Exception ex)
+        if (_action != null)
         {
-            result.SetError(ex);
-
-            _logger?.LogDebug("[Result Error]: {message}", ex.Message);
+            await _action();
         }
 
         await res.JsonSerializerAsync(result, result.Code);
@@ -140,29 +125,14 @@ public class ApiResponse<T> : ApiResponse
 
         ApiResult<T> result = new();
 
-        try
+        if (!_isPublic & _session == null)
         {
-            if (!_isPublic & _session == null)
-            {
-                throw new UnauthenticatedException();
-            }
-
-            T data = await _action();
-
-            result.SetData(data);
+            throw new UnauthenticatedException();
         }
-        catch (ApiException ex)
-        {
-            result.SetError(ex);
 
-            _logger?.LogDebug("[Result Error]: {message}", ex.Message);
-        }
-        catch (Exception ex)
-        {
-            result.SetError(ex);
+        T data = await _action();
 
-            _logger?.LogDebug("[Result Error]: {message}", ex.Message);
-        }
+        result.SetData(data);
 
         await res.JsonSerializerAsync(result, result.Code);
     }
