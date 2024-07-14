@@ -3,7 +3,9 @@
 public class Routes
 {
     public const string Void = "/void";
+    public const string VoidCustomStatus = "/void-custom-status";
     public const string Data = "/data";
+    public const string DataCustomStatus = "/data-custom-status";
     public const string Error = "/error";
     public const string GenericError = "/generic-error";
     public const string UnknownError = "/unknown-error";

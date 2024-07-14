@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net;
+using System.Net.Http.Json;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Net.Http.Headers;
@@ -30,6 +31,16 @@ public class Integration
         ApiResult result = await ParseContent(response);
 
         VerifyResult(result, response, ApiResultStatus.Ok);
+    }
+
+    [Theory]
+    [InlineData(Routes.VoidCustomStatus)]
+    [InlineData(Routes.DataCustomStatus)]
+    public async Task CustomStatus_IsSuccessful(string route)
+    {
+        HttpResponseMessage response = await _client.GetAsync(route);
+
+        VerifyResponse(response, (int)HttpStatusCode.NoContent);
     }
 
     [Theory]

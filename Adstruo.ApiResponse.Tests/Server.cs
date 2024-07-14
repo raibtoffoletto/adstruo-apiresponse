@@ -41,6 +41,19 @@ public class Server
                 }
             );
 
+            endpoints.MapGet(
+                Routes.VoidCustomStatus,
+                async (context) =>
+                {
+                    Mock<HttpContext> mockContext = new();
+                    mockContext.Setup(m => m.Response).Returns(context.Response);
+
+                    await new ApiResponse(_log, code: 204).ExecuteResultAsync(
+                        new ActionContext(mockContext.Object, _router, _action)
+                    );
+                }
+            );
+
             endpoints.MapPost(
                 Routes.Error,
                 async (context) =>
@@ -167,6 +180,23 @@ public class Server
                                     : (dynamic)data,
                             _log
                         );
+
+                    await response.ExecuteResultAsync(
+                        new ActionContext(mockContext.Object, _router, _action)
+                    );
+                }
+            );
+
+            endpoints.MapGet(
+                Routes.DataCustomStatus,
+                async (context) =>
+                {
+                    Mock<HttpContext> mockContext = new();
+                    mockContext.Setup(m => m.Response).Returns(context.Response);
+
+                    IDictionary<string, string>? data = await GetBodyData(context);
+
+                    ApiResponse<dynamic?> response = new(() => data, _log, code: 204);
 
                     await response.ExecuteResultAsync(
                         new ActionContext(mockContext.Object, _router, _action)

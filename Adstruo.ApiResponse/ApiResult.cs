@@ -37,6 +37,14 @@ public class ApiResult
 
         return this;
     }
+
+    /// <summary>Sets the result's status code</summary>
+    public ApiResult SetCode(int code)
+    {
+        Code = code;
+
+        return this;
+    }
 }
 
 /// <summary>Structured API Result with data</summary>
