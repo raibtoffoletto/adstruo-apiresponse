@@ -5,23 +5,15 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
 using Moq;
 
 namespace Adstruo.ApiResponse.Tests;
 
 public class Server
 {
-    private readonly ILogger _log;
-    private readonly RouteData _router;
-    private readonly ActionDescriptor _action;
-
-    public Server()
-    {
-        _log = Mock.Of<ILogger>();
-        _router = Mock.Of<RouteData>();
-        _action = Mock.Of<ActionDescriptor>();
-    }
+    private readonly ILogger _log = Mock.Of<ILogger>();
+    private readonly RouteData _router = Mock.Of<RouteData>();
+    private readonly ActionDescriptor _action = Mock.Of<ActionDescriptor>();
 
     public static void ConfigureServices(IServiceCollection services)
     {

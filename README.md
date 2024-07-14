@@ -4,6 +4,16 @@
 
 This `dotNet` package provides a consistent structured json response for APIs. It includes a high order class derived from `IActionResult` to be used in the project's controllers, and a set of specific error messages, each with it's proper http code, description and key.
 
+## Installation
+
+You can easily install the package by using the CLI:
+
+```bash
+dotnet add package Adstruo.ApiResponse
+```
+
+More details in the official [nuget.org](https://www.nuget.org/packages/Adstruo.ApiResponse) page.
+
 ## Usage
 
 ### Api Result

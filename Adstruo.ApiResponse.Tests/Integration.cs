@@ -9,12 +9,11 @@ namespace Adstruo.ApiResponse.Tests;
 
 public class Integration
 {
-    private readonly TestServer _server;
+    private readonly TestServer _server = new(new WebHostBuilder().UseStartup<Server>());
     private readonly HttpClient _client;
 
     public Integration()
     {
-        _server = new TestServer(new WebHostBuilder().UseStartup<Server>());
         _client = _server.CreateClient();
     }
 
@@ -249,7 +248,6 @@ public class Integration
         Assert.True(result.Message == message, "Error message is correct");
     }
 
-#pragma warning disable CA2211
     public static TheoryData<ApiException, string> ErrorData =
         new()
         {

@@ -47,10 +47,10 @@ public static class HttpResponseExtensions
     {
         services
             .AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true)
-            .ConfigureApiBehaviorOptions(
-                options =>
-                    options.InvalidModelStateResponseFactory = context =>
-                        new ApiInvalidModel(context.ModelState)
+            .ConfigureApiBehaviorOptions(options =>
+                options.InvalidModelStateResponseFactory = context => new ApiInvalidModel(
+                    context.ModelState
+                )
             );
 
         return services;
